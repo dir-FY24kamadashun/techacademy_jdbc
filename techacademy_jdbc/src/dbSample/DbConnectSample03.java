@@ -1,12 +1,15 @@
 package dbSample;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import java.sql.SQLException;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+
 
 public class DbConnectSample03 {
 
@@ -31,7 +34,10 @@ public class DbConnectSample03 {
              // 3.DBとやり取りする窓口（Statementオブジェクト）の作成
             stmt=con.createStatement();
              //4,5.Select分の実行と結果を格納/代入
-            String sql="SELECT*FROM country LIMIT 50";
+            System.out.print("検索キーワードを入力してください>");
+            String input = keyIn();
+            
+            String sql="SELECT*FROM country where Name = '"+input+"'";
             rs =stmt.executeQuery(sql);
             
              // 6.結果を表示する
@@ -41,9 +47,7 @@ public class DbConnectSample03 {
                 System.out.println(name);
                 System.out.println(population);
                 }
-            sql="update country set Population = 105000 where Code ='ABW'";
-            int count =stmt.executeUpdate(sql);
-            System.out.println(count);
+           
              // 7.接続を閉じる
         } catch (ClassNotFoundException e) {
             // TODO 自動生成された catch ブロック
@@ -62,7 +66,7 @@ public class DbConnectSample03 {
                     System.err.println("ResultSetを閉じるときにエラーが発生しました。");
                     e.printStackTrace();
                     }
-                
+            }
                 }
             if(stmt!=null) {
                 try {
@@ -81,10 +85,20 @@ public class DbConnectSample03 {
                 }
             }
         }
+    /*
+     * キーボードから入力された値をStringで返す　引数：なし　戻り値：入力された文字列
+     */
+    private static String keyIn() {
+        String line =null;
+        try {
+            BufferedReader key =new BufferedReader(new InputStreamReader(System.in));
+            line = key.readLine();
+        }catch(IOException e) {
+        }
+        return line;
          
-        
+    }
         
     }
 
 
-}
