@@ -2,17 +2,23 @@ package dbSample;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
 import java.sql.SQLException;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class DbConnectSample01 {
 
     public static void main(String[] args) {
         
         Connection con =null;
+        Statement stmt=null;
+        ResultSet rs =null;
         
         try {
             //1.ドライバーのクラスをJava上で読み込む
-            Class.forName("com.mysql.cj.jdbc.Driber");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
              //2.DBと接続する
             con =DriverManager.getConnection(
@@ -20,10 +26,20 @@ public class DbConnectSample01 {
                     "root",
                     "Xfhy_27967"
                     );
-             // 3.DBとやり取りする窓口（Statementオブジェクト）の作成
-             //4,5.Select分の実行と結果を格納/代入
-             // 6.結果を表示する
+           
    
+             // 3.DBとやり取りする窓口（Statementオブジェクト）の作成
+            stmt=con.createStatement();
+             //4,5.Select分の実行と結果を格納/代入
+            String sql="SELECT*FROM country LIMIT 50";
+            rs =stmt.executeQuery(sql);
+            
+             // 6.結果を表示する
+            while( rs.next() ) {
+                String name = rs.getString("Name");
+                
+                System.out.println(name);
+                }
              // 7.接続を閉じる
         } catch (ClassNotFoundException e) {
             // TODO 自動生成された catch ブロック
@@ -35,6 +51,23 @@ public class DbConnectSample01 {
             e.printStackTrace();
         }finally {
             
+            if(rs !=null) {
+                try {
+                    rs.close();
+                }catch(SQLException e) {
+                    System.err.println("ResultSetを閉じるときにエラーが発生しました。");
+                    e.printStackTrace();
+                    }
+                
+                }
+            if(stmt!=null) {
+                try {
+                    stmt.close();
+                }catch(SQLException e){
+                    System.err.println("Statementを閉じるときにエラーが発生しました。");
+                    e.printStackTrace();
+                }
+            }
             if(con !=null) {
                 try {
                     con.close();
