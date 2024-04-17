@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DbConnectSample01 {
+public class DbConnectSample02 {
 
     public static void main(String[] args) {
         
@@ -41,6 +41,9 @@ public class DbConnectSample01 {
                 System.out.println(name);
                 System.out.println(population);
                 }
+            sql="update country set Population = 105000 where Code ='ABW'";
+            int count =stmt.executeUpdate(sql);
+            System.out.println(count);
              // 7.接続を閉じる
         } catch (ClassNotFoundException e) {
             // TODO 自動生成された catch ブロック
